@@ -1,0 +1,503 @@
+{
+  "intents": [
+    {
+      "intent": "Greetings",
+      "examples": [
+        {
+          "text": "Good afternoon"
+        },
+        {
+          "text": "Good evening"
+        },
+        {
+          "text": "Good morning"
+        },
+        {
+          "text": "have a nice day"
+        },
+        {
+          "text": "hello"
+        },
+        {
+          "text": "hey"
+        },
+        {
+          "text": "hi"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "order",
+      "examples": [
+        {
+          "text": "hey place an order for me"
+        },
+        {
+          "text": "hey place my ordrer"
+        },
+        {
+          "text": "place me something"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "Restaurant",
+      "examples": [
+        {
+          "text": "any discounts are there for today order"
+        },
+        {
+          "text": "Any special orders can be taken"
+        },
+        {
+          "text": "What are the specials today?"
+        },
+        {
+          "text": "What is the menu"
+        }
+      ],
+      "description": ""
+    }
+  ],
+  "entities": [
+    {
+      "entity": "Food_items",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "biryani",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "dosa",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "orange juice",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "paneer masala",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "pizza",
+          "synonyms": []
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "Greetings",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "Good afternoon",
+          "synonyms": [
+            "gd noon",
+            "gud afn",
+            "gud aftn"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "Good evening",
+          "synonyms": [
+            "gd evng",
+            "good enng",
+            "gud evng"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "Good morning",
+          "synonyms": [
+            "gd mrng",
+            "gm",
+            "gudmg"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "Restaurant",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "discounts",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "menu",
+          "synonyms": [
+            "nonveg",
+            "veg"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "offers",
+          "synonyms": []
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "sys-number",
+      "values": [],
+      "fuzzy_match": true
+    }
+  ],
+  "metadata": {
+    "api_version": {
+      "major_version": "v2",
+      "minor_version": "2018-11-08"
+    }
+  },
+  "dialog_nodes": [
+    {
+      "type": "standard",
+      "title": "Anything else",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "I didn't understand. You can try rephrasing."
+              },
+              {
+                "text": "Can you reword your statement? I'm not understanding."
+              },
+              {
+                "text": "I didn't get your meaning."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "anything_else",
+      "dialog_node": "Anything else",
+      "previous_sibling": "node_6_1603188484967",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "enter the quantity"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_10_1603189168914",
+      "event_name": "focus",
+      "dialog_node": "handler_2_1603189168917",
+      "previous_sibling": "handler_5_1603189168917"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_10_1603189168914",
+      "context": {
+        "number": "@sys-number"
+      },
+      "conditions": "@sys-number",
+      "event_name": "input",
+      "dialog_node": "handler_5_1603189168917"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_6_1603188689075",
+      "context": {
+        "Food_items": "@Food_items"
+      },
+      "conditions": "@Food_items",
+      "event_name": "input",
+      "dialog_node": "handler_6_1603188689091"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "text": {
+          "values": [
+            "enter the food_item name"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "slot_6_1603188689075",
+      "event_name": "focus",
+      "dialog_node": "handler_8_1603188689091",
+      "previous_sibling": "handler_6_1603188689091"
+    },
+    {
+      "type": "standard",
+      "title": "deleting the context variables",
+      "output": {
+        "deleted": "<?context.remove('food_items')?><?context.remove('number')?>",
+        "generic": [
+          {
+            "values": [],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_6_1603188484967",
+      "conditions": "true",
+      "dialog_node": "node_2_1603191288660"
+    },
+    {
+      "type": "standard",
+      "title": "Restaurant Node",
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#Restaurant",
+      "dialog_node": "node_4_1603186434204",
+      "previous_sibling": "node_6_1603184137583"
+    },
+    {
+      "type": "standard",
+      "title": "Greetings Node",
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#Greetings || @Greetings",
+      "dialog_node": "node_6_1603184137583",
+      "previous_sibling": "Welcome"
+    },
+    {
+      "type": "frame",
+      "title": "order food",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "your order of $Food_items with quantity $number is successfully placed."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "#order",
+      "dialog_node": "node_6_1603188484967",
+      "previous_sibling": "node_4_1603186434204"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": ""
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_6_1603184137583",
+      "conditions": "@Greetings:(Good afternoon)",
+      "dialog_node": "response_10_1603185293652"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Hey! Good Afternoon"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_6_1603184137583",
+      "conditions": "@Greetings:(Good afternoon)",
+      "dialog_node": "response_1_1603185329026",
+      "previous_sibling": "response_10_1603185293652"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "hay hello, have a nice day"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_6_1603184137583",
+      "conditions": "anything_else",
+      "dialog_node": "response_1_1603187395248",
+      "previous_sibling": "response_9_1603185424791"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "title": "Menu",
+            "source": "https://i.pinimg.com/564x/14/14/6e/14146e5630857626e6e768832e89749e.jpg",
+            "description": "All the items present in the menu are available",
+            "response_type": "image"
+          }
+        ]
+      },
+      "parent": "node_4_1603186434204",
+      "conditions": "@Restaurant:menu",
+      "dialog_node": "response_4_1603186632582"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "20% discount on all the items"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_4_1603186434204",
+      "conditions": "@Restaurant:offers",
+      "dialog_node": "response_8_1603187223980",
+      "previous_sibling": "response_4_1603186632582"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Hey! Great evening"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_6_1603184137583",
+      "conditions": "@Greetings:(Good evening)",
+      "dialog_node": "response_9_1603185424791",
+      "previous_sibling": "response_1_1603185329026"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "30% discount on all the items"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_4_1603186434204",
+      "conditions": "@Restaurant:discounts",
+      "dialog_node": "response_9_1603187848471",
+      "previous_sibling": "response_8_1603187223980"
+    },
+    {
+      "type": "slot",
+      "parent": "node_6_1603188484967",
+      "variable": "$number",
+      "dialog_node": "slot_10_1603189168914",
+      "previous_sibling": "slot_6_1603188689075"
+    },
+    {
+      "type": "slot",
+      "parent": "node_6_1603188484967",
+      "variable": "$Food_items",
+      "dialog_node": "slot_6_1603188689075",
+      "previous_sibling": "node_2_1603191288660"
+    },
+    {
+      "type": "standard",
+      "title": "Welcome",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Hello! This is RestroBot. I am here to help you with your queries you related to Restaurant and place your order."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "welcome",
+      "dialog_node": "Welcome"
+    }
+  ],
+  "counterexamples": [],
+  "system_settings": {
+    "off_topic": {
+      "enabled": true
+    },
+    "disambiguation": {
+      "prompt": "Did you mean:",
+      "enabled": true,
+      "randomize": true,
+      "max_suggestions": 5,
+      "suggestion_text_policy": "title",
+      "none_of_the_above_prompt": "None of the above"
+    },
+    "system_entities": {
+      "enabled": true
+    },
+    "human_agent_assist": {
+      "prompt": "Did you mean:"
+    },
+    "spelling_auto_correct": true
+  },
+  "learning_opt_out": false,
+  "name": "IBMHC1",
+  "language": "en",
+  "description": ""
+}
